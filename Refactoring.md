@@ -10,14 +10,17 @@ You will be graded on the exhaustiveness and quality of your unit tests, the dep
 
 ## Your Explanation Here
 
-In this refactored code, I've broken down the main function into smaller, more focused functions to improve readability and maintainability. The deterministicPartitionKey function now has three parts:
+Optimizations:
 
-It first checks if the event has a custom partition key using the getEventPartitionKey function, which improves readability by encapsulating this logic.
-If no custom partition key is found, it generates a candidate key by hashing the event data using the generateCandidatePartitionKey function. The use of a separate function here helps in maintaining the single responsibility principle and makes the code easier to follow.
-Finally, if the candidate key exceeds the maximum allowed length, the function generates a long partition key by hashing the candidate key again using the generateLongPartitionKey function.
-Additionally, the variable declarations for TRIVIAL_PARTITION_KEY and MAX_PARTITION_KEY_LENGTH are kept at the top to make them easily configurable and improve code maintainability.
+Removed unnecessary variables (TRIVIAL_PARTITION_KEY and MAX_PARTITION_KEY_LENGTH) to simplify the code and improve readability.
+Removed the second check for the candidate variable to convert it to a string using JSON.stringify. Since we are already checking if the event's partitionKey is a string, we can directly return it.
+In cases where event.partitionKey is not available, I directly calculate the candidate partition key using SHA3-512 and avoid an additional function call.
+I skipped the intermediate variable assignment for candidate when it exceeds the maximum length and calculate the long partition key directly.
+By making these optimizations, the code becomes more concise and avoids unnecessary calculations, making it slightly more optimized. The unit tests provided in the previous response would still provide good coverage for this optimized version as well.
 
-The unit tests cover all the different scenarios of generating the partition key, ensuring that the refactoring doesn't break the existing functionality. The tests are concise, well-structured, and provide a comprehensive coverage of the code logic, making it easier to validate the correctness of the refactored function.
+
+
+
 
 
 
